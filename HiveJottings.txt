@@ -1,0 +1,269 @@
+
+#This is a rough jottings of my codes during this analysis, It may not be commented out... It is pretty rough.
+
+
+
+#Figuring out the variables in the dataset by checking file.
+
+maker,model,mileage,manufacture_year,engine_displacement,engine_power,body_type,
+color_slug,stk_year,transmission,door_count,seat_count,fuel_type,date_created,date_last_seen,price_eur
+
+
+#Creating a table with hive
+
+CREATE TABLE IF NOT EXISTS used_cars(​ maker string,​​ model string,​ mileage int,​ manufacturer_year date,​ engine_displacement int,​ engine_power int,​
+body_type string,
+color_slug string,
+stk_year date, transmission string,​
+door_count int,
+seat_count int,
+fuel_type string,
+date_created string,
+date_last_seen string,
+price_eur float)​ ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+LOCATION ‘/BigData/hive/‘;
+
+
+maker,model,mileage,manufacture_year,engine_displacement,engine_power,body_type,color_slug,stk_year,transmission,door_count,seat_count,fuel_type,date_created,date_last_seen,price_eur
+
+
+#Creating a table of the clean dataset
+
+
+ CREATE EXTERNAL TABLE IF NOT EXISTS clean__used_cars (
+maker string,
+model string,
+mileage string,
+manufacturer_year int,
+engine_displacement int,
+engine_power int,
+body_type string,
+color_slug string,
+stk_year int,
+transmission string,
+door_count int,
+seat_count int,
+fuel_type string,
+date_created string,
+date_last_seen string,
+price_eur float)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/BigData/hive/‘;
+TBLPROPERTIES (“skipheaderlinecount”=“1”);
+TBLPROPERTIES ("skip.header.line.count"="1");
+
+
+CREATE TABLE IF NOT EXISTS clean__used_cars(makerandmodel string, manufacturer_year int, price_eur float)
+     ROW FORMAT DELIMITED
+	FEILDS SEPARATED BY ','
+     LOCATION '/BigData/hive/cars.csv'
+     TBLPROPERTIES("skip.header.line.count"="2");
+
+
+CREATE TABLE IF NOT EXISTS clean__used_cars (makerandmodel string, manufacturer_year int, price_eur float)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS CSVFILE
+LOCATION ‘/BigData/hive/’;
+
+CRE
+, 
+select count(*) from cars_db where cars = "NULL";
+SELECT count(*) FROM used_cars where maker = "";
+SELECT count(*) FROM used_cars where model = "";
+SELECT count(*) FROM used_cars where mileage = "";
+SELECT count(*) FROM used_cars where manufacturer_year = "";
+SELECT count(*) FROM used_cars where engine_displacement = "";
+SELECT count(*) FROM used_cars where engine_power = "";
+SELECT count(*) FROM used_cars where body_type = "";
+SELECT count(*) FROM used_cars where color_slug = "";
+SELECT count(*) FROM used_cars where stk_year = "";
+SELECT count(*) FROM used_cars where transmission = "";
+SELECT count(*) FROM used_cars where door_count = "";
+SELECT count(*) FROM used_cars where seat_count = "";
+SELECT count(*) FROM used_cars where fuel_type = "";
+SELECT count(*) FROM used_cars where date_created = "";
+SELECT count(*) FROM used_cars where date_last_seen = "";
+SELECT count(*) FROM used_cars where price_eur = "";
+
+
+
+
+SELECT SUM used_cars where maker = "" / count(*);
+
+maker,model,mileage,manufacture_year,engine_displacement,engine_power,body_type,color_slug,stk_year,transmission,door_count,seat_count,fuel_type,date_created,date_last_seen,price_eur
+SELECT MAKER
+select avg(case when maker = “” then 1.0 else 0.0 end) as col1_null_p,
+       avg(case when model = “” then 1.0 else 0.0 end) as col2_null_p,
+	  avg(case when mileage is null then 1.0 else 0.0 end) as col3_null_p
+avg(case when manufacturer_year is null then 1.0 else 0.0 end) as col4_null_p
+avg(case when engine_displacement is null then 1.0 else 0.0 end) as col5_null_p
+avg(case when engine_power is null then 1.0 else 0.0 end) as col6_null_p
+avg(case when body_type is null then 1.0 else 0.0 end) as col7_null_p
+avg(case when color_slug is null then 1.0 else 0.0 end) as col8_null_p
+avg(case when stk_year is null then 1.0 else 0.0 end) as col9_null_p
+avg(case when transmission is null then 1.0 else 0.0 end) as col10_null_p
+avg(case when door_count is null then 1.0 else 0.0 end) as col11_null_p
+avg(case when seat_count is null then 1.0 else 0.0 end) as col12_null_p
+avg(case when fuel_type is null then 1.0 else 0.0 end) as col13_null_p
+avg(case when date_created is null then 1.0 else 0.0 end) as col14_null_p
+avg(case when date_last_seen is null then 1.0 else 0.0 end) as col5_null_p
+avg(case when price_eur is null then 1.0 else 0.0 end) as col6_null_p
+avg(case when maker is null then 1.0 else 0.0 end) as col1_null_p
+
+from t;
+
+SELECT sum(case when maker is NULL then 1 else 0) / count(*);
+
+
+SELECT maker, price_eur, COUNT(DISTINCT maker, price_eur)from used_cars
+group by maker,price_eur;
+
+
+SELECT COUNT (DISTINCT column-name)  FROM table-name
+
+
+SELECT columnA,columnB,COUNT(DISTINCT columnC) No_of_distinct_colC
+from table_name
+group by columnA,columnB
+
+select cast('9223372036854775805' as bigint);
+
+
+
+
+
+select from_unixtime(unix_timestamp(columnname ,'dd-MMM-yyyy'), 'dd-MM-yyyy') from tablename;
+
+to_date(timestamp date)
+
+
+
+hive> create table tmp(a string, b string) row format delimited fields terminated by ',';
+hive> load data local inpath 'a.txt' overwrite into table tmp;
+hive> create table mytime(a string, b timestamp);
+hive> insert into table mytime select a, from_unixtime(unix_timestamp(b, 'dd-MM-yyyy HH:mm')) from tmp;
+hive> select * from mytime;
+a 2015-11-20 22:07:00
+b 2015-08-17 09:45:00
+
+
+sum(case when cars is null then 1 else 0 end)
+
+select count(*) from demo where 2gusage = "NULL";
+
+CREATE TABLE cars_date(date_created timestamp, date_last_seen timestamp);
+
+INSERT INTO TABLE cars_date SELECT date_created, from_unixtime(unix_timestamp(date_last_seen, 'yyyy-MM-dd HH:
+mm:ss')) FROM used_cars;
+
+
+select count(distinct price_eur) from used_cars;
+
+
+INSERT INTO TABLE cars_date SELECT date_created, from_unixtime(unix_timestamp(date_last_seen, 'yyyy-MM-dd HH
+:mm:ss’))from cars;
+
+CREATE TABLE cars_date1(date_created timestamp, date_last_seen timestamp);
+
+
+SELECT * FROM cars LIMIT 10;
+
+DESCRIBE cars;
+
+
+
+
+
+
+
+
+
+
+
+SELECT ymd, symbol, price_close
+FROM stocks WHERE year(ymd) = '2003'
+DISTRIBUTE BY symbol
+SORT BY symbol ASC, price_close DESC;
+
+
+CREATE TABLE clean_used_cars AS SELECT * FROM used_cars WHERE 1 = 2;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS clean_used_cars (
+maker string,
+model string,
+mileage string,
+manufacturer_year string,
+engine_displacement int,
+engine_power int,
+body_type string,
+color_slug string,
+stk_year string,
+transmission string,
+door_count int,
+seat_count int,
+fuel_type string,
+date_created string,
+date_last_seen string,
+price_eur float)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/BigData/hive/'; 
+
+CREATE TABLE clean_used_cars AS SELECT * FROM used_car WHERE 1 = 2,
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/BigData/hive/'; 
+
+
+DROP TABLE IF EXISTS schema.clean_used_cars;    
+CREATE TABLE clean_used_cars 
+AS   
+select *   
+from used_cars   
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ‘,’ LINES TERMINATED BY ‘,’
+LOCATION ‘/BigData/hive/’;
+
+
+#Creating a table from another table with the data and schema.
+CREATE TABLE clean__used_cars AS SELECT * FROM used_cars;
+
+CREATE TABLE IF NOT EXISTS clean_used_cars(makerandmodel string, manufacturer_year date, price_eur int) AS SELECT * FROM used_cars;
+
+#Counting the numbers od data in a table in hive
+SELECT COUNT(*) FROM clean_used_cars;
+
+#To delete from table in hive
+SET hive.support.concurrency=true;
+SET hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+DELETE * FROM clean_used_cars WHERE  manufacturer_year <=1999 AND manufacturer_year >=2018; 
+
+set hive.support.concurrency=true; set hive.enforce.bucketing=true; set hive.exec.dynamic.partition.mode=nonstrict; set hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DbTxnManager; set hive.compactor.initiator.on=true; set hive.compactor.worker.threads=2;
+
+ALTER TABLE clean_used_cars REPLACE COLUMNS ( 
+     makerandmodel string,
+     mileage string,
+     manufacturer_year string,
+     price_eur float
+     );
+
+ALTER TABLE clean_used_cars REPLACE COLUMNS ( 
+     makerandmodel string,
+     mileage string,
+     manufacturer_year string,
+     engine_displacement int,
+     engine_power int,
+     date_created string,
+     date_last_seen string,
+     price_eur double
+     ) FROM (clean_used_cars WHERE price_eur >= 3000 AND price_eur <=2000000 AND manufacturer_year >= 2000 AND manufacturer_year <= 2017);
+
+
+
+
+SELECT maker, model, price_eur FROM clean__used_cars WHERE price_eur < (SELECT AVG(price_eur) FROM clean_used_cars GROUP BY maker, model) GROUP BY maker, model ORDER BY price_eur LIMIT 2;
+
+replace table_car with your table
+
+
+
+
+
+select maker, model from cleaned__used_cars where price_eur between 3000000 and 2000000 limit 10;
